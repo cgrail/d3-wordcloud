@@ -1,0 +1,22 @@
+{
+  "name": "d3-wordcloud",
+  "version": "1.0.0",
+  "description": "D3 Word Cloud example",
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgrail/d3-wordcloud.git"
+  },
+  "author": "Christian Grail",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cgrail/d3-wordcloud/issues"
+  },
+  "homepage": "https://github.com/cgrail/d3-wordcloud#readme"
+}
