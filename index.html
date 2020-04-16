@@ -30,8 +30,7 @@
             var fill = d3.scale.category20();
             function draw(words) {
                 d3.select(parent_elem).append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
+                    .attr("viewBox", `0 0 ${width} ${height}`)
                     .attr("class", svg_class)
                     .append("g")
                     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
@@ -84,6 +83,10 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             color: grey;
+        }
+
+        #wordCloud {
+            width: 50%;
         }
 
         h1 {
