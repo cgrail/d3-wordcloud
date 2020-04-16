@@ -7,37 +7,78 @@
     <script src="https://unpkg.com/d3-cloud@1.2.5/build/d3.layout.cloud.js"> </script>
 
     <script type="text/javascript">
-        var layout = d3.layout.cloud()
-            .size([1000, 500])
-            .words([
-                "Hello", "Hello", "Hello", "world", "normally", "you", "want", "more", "words",
-                "than", "this"].map(function (d) {
-                    return { text: d, size: 10 + Math.random() * 90, test: "haha" };
-                }))
-            .padding(5)
-            .rotate(function () { return ~~(Math.random() * 2) * 90; })
-            .font("Impact")
-            .fontSize(function (d) { return d.size; })
-            .on("end", draw);
+        var fill = d3.scale.category20();
+        data = [
+            { "word": "Test", "value": 3 },
+            { "word": "太郎", "value": 13 },
+            { "word": "西尾", "value": 8 },
+            { "word": "Test", "value": 80 },
+            { "word": "完全", "value": 18 },
+            { "word": "無血", "value": 2 },
+            { "word": "開城", "value": 6 },
+            { "word": "極悪", "value": 2 },
+            { "word": "戦隊", "value": 1 },
+            { "word": "田中", "value": 3 },
+            { "word": "太郎", "value": 13 },
+            { "word": "西尾", "value": 8 },
+            { "word": "維新", "value": 80 },
+            { "word": "完全", "value": 18 },
+            { "word": "無血", "value": 2 },
+            { "word": "開城", "value": 6 },
+            { "word": "極悪", "value": 2 },
+            { "word": "戦隊", "value": 1 },
+            { "word": "田中", "value": 3 },
+            { "word": "太郎", "value": 13 },
+            { "word": "西尾", "value": 8 },
+            { "word": "維新", "value": 80 },
+            { "word": "完全", "value": 18 },
+            { "word": "無血", "value": 2 },
+            { "word": "開城", "value": 6 },
+            { "word": "極悪", "value": 2 },
+            { "word": "戦隊", "value": 1 },
+        ]
 
-        layout.start();
 
-        function draw(words) {
-            d3.select("body").append("svg")
-                .attr("width", layout.size()[0])
-                .attr("height", layout.size()[1])
-                .append("g")
-                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-                .selectAll("text")
-                .data(words)
-                .enter().append("text")
-                .style("font-size", function (d) { return d.size + "px"; })
-                .style("font-family", "Impact")
-                .attr("text-anchor", "middle")
-                .attr("transform", function (d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function (d) { return d.text; });
+        // makeWordCloud(data, css selector that you wanna insert in, scale of svg, class name of svg, font-family, rotate or not, your color converting function)
+        makeWordCloud(data, "body", 400, "my_svg", "Impact", true)
+
+        function makeWordCloud(data, parent_elem, svgscale, svg_class, font, rotate_word) {
+
+            function draw(words) {
+                d3.select(parent_elem).append("svg")
+                    .attr("width", svgscale)
+                    .attr("height", svgscale)
+                    .attr("class", svg_class)
+                    .append("g")
+                    .attr("transform", "translate(" + svgscale / 2 + "," + svgscale / 2 + ")")
+                    .selectAll("text")
+                    .data(words)
+                    .enter().append("text")
+                    .style("font-size", function (d) { return d.size + "px"; })
+                    .style("font-family", font)
+                    .style("fill", function (d, i) { return fill(i) })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function (d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .text(function (d) { return d.text; });
+            }
+            if (svg_class) { d3.select("." + svg_class).remove() }
+            else { d3.select("svg").remove() }
+
+            var data_max = d3.max(data, function (d) { return d.value });
+            var sizeScale = d3.scale.linear().domain([0, data_max]).range([0, 1])
+            data = data.map(function (d) {
+                return { text: d.word, size: 10 + sizeScale(d.value) * 90 };
+            })
+            var layout = d3.layout.cloud().size([svgscale, svgscale])
+                .words(data)
+                .padding(5)
+                .fontSize(function (d) { return d.size; })
+            if (!rotate_word) { layout.rotate(function () { return ~~(Math.random() * 2) * 90; }) }
+            layout
+                .on("end", draw)
+                .start();
         }
     </script>
 
