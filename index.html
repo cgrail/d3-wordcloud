@@ -17,7 +17,7 @@
         countedWords["is"] = 10;
         countedWords["Great"] = 10;
 
-        makeWordCloud(d3.entries(countedWords), "body", 800, "my_svg", "Impact", true)
+        makeWordCloud(d3.entries(countedWords), "body", 700, 450, "my_svg", "Impact", true)
 
 
 
@@ -42,15 +42,15 @@
 
 
 
-        function makeWordCloud(data, parent_elem, svgscale, svg_class, font, rotate_word) {
+        function makeWordCloud(data, parent_elem, width, height, svg_class, font, rotate_word) {
 
             function draw(words) {
                 d3.select(parent_elem).append("svg")
-                    .attr("width", svgscale)
-                    .attr("height", svgscale)
+                    .attr("width", width)
+                    .attr("height", height)
                     .attr("class", svg_class)
                     .append("g")
-                    .attr("transform", "translate(" + svgscale / 2 + "," + svgscale / 2 + ")")
+                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
                     .selectAll("text")
                     .data(words)
                     .enter().append("text")
@@ -71,7 +71,7 @@
             data = data.map(function (d) {
                 return { text: d.key, size: 10 + sizeScale(d.value) * 90 };
             })
-            var layout = d3.layout.cloud().size([svgscale, svgscale])
+            var layout = d3.layout.cloud().size([width, height])
                 .words(data)
                 .padding(5)
                 .fontSize(function (d) { return d.size; })
